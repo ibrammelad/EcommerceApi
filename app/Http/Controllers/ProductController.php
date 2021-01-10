@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         //return $product;
-        return  ProductResource::make($product);
+        return  \response()->json(ProductResource::make($product) , 200);
     }
 
     public function update(Request $request, Product $product)

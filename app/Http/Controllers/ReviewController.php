@@ -26,47 +26,31 @@ class ReviewController extends Controller
         $vail['product_id']  =$product->id;
         $review = Review::create($vail);
         return response()->json([
+            "data" => new ReviewResource($review)], 201);
+
+    }
+
+
+    public function show(Product $product ,Review $review )
+    {
+        return response()->json([
             "data" => new ReviewResource($review)], 200);
-
     }
 
-
-    public function show(Review $review)
+    public function update(Request $request, Product $product ,Review $review )
     {
-        //
+        $vail = $request->except("body");
+        $vail["review"]  =$request->body;
+        $vail["product_id"]  =$product->id;
+
+        $review->update($vail);
+        return response()->json([
+            "data" => new ReviewResource($review)], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Review $review)
+    public function destroy(Product $product,Review $review)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Review $review)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Review $review)
-    {
-        //
+        $review->delete();
+        return response()->json(null, 204);
     }
 }
