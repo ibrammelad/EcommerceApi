@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\product\ReviewResource;
 use App\Models\Product;
 use App\Models\Review;
@@ -15,33 +16,21 @@ class ReviewController extends Controller
         return ReviewResource::collection($product->reviews);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+
+
+    public function store(ReviewRequest $request , Product $product)
     {
-        //
+        $vail = $request->except("body");
+        $vail["review"]  =$request->body;
+        $vail['product_id']  =$product->id;
+        $review = Review::create($vail);
+        return response()->json([
+            "data" => new ReviewResource($review)], 200);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
     public function show(Review $review)
     {
         //

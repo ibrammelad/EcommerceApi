@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use phpDocumentor\Reflection\Types\Parent_;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -12,6 +13,7 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
+    use ExceptionsTrait ;
     protected $dontReport = [
         //
     ];
@@ -36,5 +38,14 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, \Throwable $exception)
+    {
+        if ($request->expectsJson()) {
+                    return $this->apiException($exception,$request);
+
+        }
+        return Parent::render($request , $exception);
     }
 }
