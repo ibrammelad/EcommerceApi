@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             "description" => "required",
             "discount" => "required|max:2",
             "stock" => "required|max:5",
-            "price" => "required|max:10|Digits Between:100,10000",
+            "price" => "required|max:10",
         ];
     }
 }
